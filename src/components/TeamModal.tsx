@@ -170,25 +170,28 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4 md:px-10"
+      className="fixed inset-0 z-50 overflow-y-auto"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-name"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) handleClose();
-      }}
     >
       <div
         ref={backdropRef}
-        className="absolute inset-0 bg-ink/85"
+        className="fixed inset-0 bg-ink/85"
         style={{ backdropFilter: 'blur(8px)', opacity: 0 }}
         onClick={handleClose}
         aria-hidden="true"
       />
 
       <div
+        className="relative min-h-full flex items-start justify-center px-4 md:px-10 py-10 md:py-20"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) handleClose();
+        }}
+      >
+      <div
         ref={containerRef}
-        className="relative w-full max-w-[1100px] max-h-[90vh] bg-paper border border-hairline shadow-2xl overflow-hidden flex flex-col"
+        className="relative w-full max-w-[1100px] bg-paper border border-hairline shadow-2xl flex flex-col"
       >
         <header className="flex items-center justify-between px-6 md:px-10 py-5 border-b border-hairline">
           <button
@@ -207,7 +210,7 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
           </span>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 overflow-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2">
           <div
             ref={photoSlotRef}
             className="aspect-[4/5] md:aspect-auto md:min-h-[560px] bg-paper-deep relative overflow-hidden"
@@ -216,7 +219,7 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
 
           <div
             ref={contentRef}
-            className="px-6 md:px-10 py-10 md:py-12 space-y-6 overflow-auto"
+            className="px-6 md:px-10 py-10 md:py-12 space-y-6"
           >
             <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-amber block">
               {member.countryCode} · {tierLabel(member.tier)} · {member.country}
@@ -281,6 +284,7 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
             </a>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
