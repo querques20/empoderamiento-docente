@@ -91,8 +91,8 @@ export function Hero() {
 
       <h1
         ref={headlineRef}
-        className="font-display font-light leading-[0.95] text-ink"
-        style={{ fontSize: 'clamp(48px, 10vw, 160px)' }}
+        className="font-display font-light leading-[1.02] text-ink max-w-[22ch]"
+        style={{ fontSize: 'clamp(36px, 5vw, 76px)' }}
       >
         {HEADLINE_PARTS.map((part, i) => {
           const words = part.text.split(/(\s+)/).filter(Boolean);
@@ -102,7 +102,7 @@ export function Hero() {
               <span
                 key={`${i}-${j}`}
                 className="inline-block overflow-hidden align-baseline"
-                style={{ lineHeight: 0.95 }}
+                style={{ lineHeight: 1.02 }}
               >
                 <span
                   className={`word-inner inline-block ${part.italic ? 'italic' : ''}`}
