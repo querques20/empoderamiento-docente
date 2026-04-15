@@ -19,6 +19,17 @@ export function Hero() {
 
   useGSAP(
     () => {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        gsap.set([eyebrowRef.current, leadRef.current, metaRef.current], {
+          opacity: 1,
+          clipPath: 'none',
+        });
+        const wordsEls = headlineRef.current?.querySelectorAll('.word-inner');
+        if (wordsEls) gsap.set(wordsEls, { yPercent: 0 });
+        return;
+      }
+
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
       tl.fromTo(

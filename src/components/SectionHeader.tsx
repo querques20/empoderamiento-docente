@@ -19,6 +19,15 @@ export function SectionHeader({ number, chapter, title, subtitle }: SectionHeade
     () => {
       if (!rootRef.current) return;
 
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        gsap.set(numberRef.current, { x: 0, opacity: 1 });
+        const wordsEls = titleRef.current?.querySelectorAll('.word-inner');
+        if (wordsEls) gsap.set(wordsEls, { yPercent: 0 });
+        gsap.set(ruleRef.current, { scaleX: 1 });
+        return;
+      }
+
       const trigger = {
         trigger: rootRef.current,
         start: 'top 80%',

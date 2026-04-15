@@ -43,6 +43,13 @@ export function TeamSection({
   useGSAP(
     () => {
       if (!gridRef.current) return;
+
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        gsap.set(gridRef.current.children, { y: 0, opacity: 1 });
+        return;
+      }
+
       const cards = gridRef.current.children;
       gsap.fromTo(
         cards,
