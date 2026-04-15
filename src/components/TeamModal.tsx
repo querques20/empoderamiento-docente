@@ -24,11 +24,16 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const closingRef = useRef(false);
+  const openContextRef = useRef(openContext);
 
   const member = openContext?.member ?? null;
   const isOpen = member !== null;
 
   useLockScroll(isOpen);
+
+  useEffect(() => {
+    openContextRef.current = openContext;
+  }, [openContext]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -96,10 +101,15 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
     if (closingRef.current || !openContext) return;
     closingRef.current = true;
 
+    // Snapshot the context being closed. If a new modal opens mid-close (e.g.
+    // keyboard nav), the Flip onComplete below bails out instead of clobbering
+    // the new state.
+    const snapshot = openContext;
+
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (prefersReduced) {
-      openContext.cardPhotoWrapperEl.appendChild(openContext.photoEl);
+      snapshot.cardPhotoWrapperEl.appendChild(snapshot.photoEl);
       closingRef.current = false;
       onClose();
       return;
@@ -127,10 +137,10 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
     }
 
     // Capture photo current state (in modal slot)
-    const state = Flip.getState(openContext.photoEl);
+    const state = Flip.getState(snapshot.photoEl);
 
     // Move photo back to original wrapper
-    openContext.cardPhotoWrapperEl.appendChild(openContext.photoEl);
+    snapshot.cardPhotoWrapperEl.appendChild(snapshot.photoEl);
 
     // Flip back
     Flip.from(state, {
@@ -140,14 +150,17 @@ export function TeamModal({ openContext, total, onClose }: TeamModalProps) {
       scale: true,
       delay: 0.15,
       onComplete: () => {
-        if (openContext.cardPhotoWrapperEl) {
-          gsap.fromTo(
-            openContext.cardPhotoWrapperEl,
-            { scale: 1 },
-            { scale: 1.02, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' },
-          );
-        }
         closingRef.current = false;
+
+        // If a new modal opened during our close animation, the active
+        // context is no longer ours. Leave the new state alone.
+        if (openContextRef.current !== snapshot) return;
+
+        gsap.fromTo(
+          snapshot.cardPhotoWrapperEl,
+          { scale: 1 },
+          { scale: 1.02, duration: 0.2, yoyo: true, repeat: 1, ease: 'power2.out' },
+        );
         onClose();
       },
     });
