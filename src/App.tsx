@@ -17,15 +17,13 @@ export default function App() {
   const handleOpen = useCallback(
     (member: TeamMember, photoEl: HTMLElement, cardEl: HTMLElement) => {
       lastFocusedRef.current = document.activeElement as HTMLElement;
-      const wrapper = photoEl.parentElement;
-      if (!wrapper) return;
 
       const index = team.findIndex((m) => m.id === member.id) + 1;
       setOpenContext({
         member,
         index,
         photoEl,
-        cardPhotoWrapperEl: wrapper,
+        cardPhotoWrapperEl: photoEl,
       });
       void cardEl;
     },
@@ -39,11 +37,14 @@ export default function App() {
     }, 100);
   }, []);
 
+  const directionCount = teamByTier.direccion.length;
+  const leadersCount = teamByTier.lideres.length;
+
   return (
     <>
       <Nav />
 
-      <main>
+      <main className="relative">
         <Hero />
 
         <TeamSection
@@ -53,6 +54,9 @@ export default function App() {
           subtitle="Quienes trazan el rumbo."
           members={teamByTier.direccion}
           variant="large"
+          startIndex={1}
+          glyph="Σ"
+          glyphPosition="right"
           onOpen={handleOpen}
         />
 
@@ -63,6 +67,9 @@ export default function App() {
           subtitle="Quienes sostienen la estructura académica."
           members={teamByTier.lideres}
           variant="medium"
+          startIndex={1 + directionCount}
+          glyph="∫"
+          glyphPosition="left"
           onOpen={handleOpen}
         />
 
@@ -73,6 +80,9 @@ export default function App() {
           subtitle="Quienes construyen la práctica de aula."
           members={teamByTier.facilitacion}
           variant="small"
+          startIndex={1 + directionCount + leadersCount}
+          glyph="∞"
+          glyphPosition="right"
           onOpen={handleOpen}
         />
       </main>

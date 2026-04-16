@@ -14,19 +14,30 @@ interface TeamSectionProps {
   subtitle?: string;
   members: TeamMember[];
   variant: Variant;
+  startIndex: number;
+  glyph?: string;
+  glyphPosition?: 'left' | 'right';
   onOpen: (member: TeamMember, photoEl: HTMLElement, cardEl: HTMLElement) => void;
 }
 
 const GRID: Record<Variant, string> = {
-  large: 'grid-cols-1 md:grid-cols-2',
-  medium: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-  small: 'grid-cols-2 md:grid-cols-3',
+  large: 'grid-cols-1 sm:grid-cols-2 md:grid-cols-2',
+  medium: 'grid-cols-2 md:grid-cols-3',
+  small: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
 };
 
 const GAP: Record<Variant, string> = {
-  large: 'gap-10 md:gap-16',
-  medium: 'gap-8 md:gap-12',
-  small: 'gap-6 md:gap-10',
+  large: 'gap-x-8 gap-y-10 md:gap-x-10 md:gap-y-12',
+  medium: 'gap-x-6 gap-y-10 md:gap-x-10 md:gap-y-12',
+  small: 'gap-x-5 gap-y-8 md:gap-x-8 md:gap-y-10',
+};
+
+/** Max width constraint for the grid itself, centered within the section.
+ *  Keeps Direccion cards bigger than Lideres but smaller than full-width. */
+const GRID_MAX: Record<Variant, string> = {
+  large: 'max-w-[1120px]',
+  medium: '',
+  small: '',
 };
 
 export function TeamSection({
@@ -36,6 +47,9 @@ export function TeamSection({
   subtitle,
   members,
   variant,
+  startIndex,
+  glyph,
+  glyphPosition = 'right',
   onOpen,
 }: TeamSectionProps) {
   const gridRef = useRef<HTMLDivElement>(null);
@@ -53,16 +67,16 @@ export function TeamSection({
       const cards = gridRef.current.children;
       gsap.fromTo(
         cards,
-        { y: 40, opacity: 0 },
+        { y: 28, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
-          stagger: 0.08,
+          duration: 0.9,
+          stagger: 0.07,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: gridRef.current,
-            start: 'top 85%',
+            start: 'top 88%',
             once: true,
           },
         },
@@ -72,12 +86,36 @@ export function TeamSection({
   );
 
   return (
-    <section className="relative">
+    <section className="relative overflow-hidden">
+      {glyph && (
+        <span
+          className="math-glyph math-glyph--drift-slow"
+          style={{
+            [glyphPosition]: '-3vw',
+            top: '6vh',
+            fontSize: 'clamp(220px, 34vw, 560px)',
+            opacity: 0.055,
+            fontWeight: 200,
+          }}
+          aria-hidden="true"
+        >
+          {glyph}
+        </span>
+      )}
       <SectionHeader number={number} chapter={chapter} title={title} subtitle={subtitle} />
-      <div className="px-6 md:px-12 lg:px-16 max-w-[1440px] mx-auto mt-16 md:mt-24 pb-24">
-        <div ref={gridRef} className={`grid ${GRID[variant]} ${GAP[variant]}`}>
-          {members.map((m) => (
-            <TeamCard key={m.id} member={m} size={variant} onOpen={onOpen} />
+      <div className="relative z-10 px-6 md:px-10 lg:px-14 max-w-[1400px] mx-auto mt-10 md:mt-14 pb-16 md:pb-20">
+        <div
+          ref={gridRef}
+          className={`grid ${GRID[variant]} ${GAP[variant]} ${GRID_MAX[variant]} mx-auto`}
+        >
+          {members.map((m, i) => (
+            <TeamCard
+              key={m.id}
+              member={m}
+              size={variant}
+              index={startIndex + i}
+              onOpen={onOpen}
+            />
           ))}
         </div>
       </div>

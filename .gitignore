@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Agent / tooling state
+.omc/
+.claude/
+
+# Env
+.env
+.env.local
+.env.*.local
