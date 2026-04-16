@@ -3,6 +3,7 @@ import { useLenis } from './hooks/useLenis';
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { HomeHero } from './components/HomeHero';
+import { HomeColabs } from './components/HomeColabs';
 import { IntroScreen } from './components/IntroScreen';
 import { TeamSection } from './components/TeamSection';
 import { Footer } from './components/Footer';
@@ -61,6 +62,7 @@ export default function App() {
       {currentPage === 'inicio' && (
         <main className="relative">
           <HomeHero />
+          <HomeColabs />
         </main>
       )}
 
