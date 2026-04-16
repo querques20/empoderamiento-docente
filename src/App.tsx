@@ -4,6 +4,7 @@ import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { HomeHero } from './components/HomeHero';
 import { HomeColabs } from './components/HomeColabs';
+import { HomePilares } from './components/HomePilares';
 import { IntroScreen } from './components/IntroScreen';
 import { TeamSection } from './components/TeamSection';
 import { Footer } from './components/Footer';
@@ -63,6 +64,7 @@ export default function App() {
         <main className="relative">
           <HomeHero />
           <HomeColabs />
+          <HomePilares />
         </main>
       )}
 
