@@ -2,14 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { Logo } from './Logo';
 
-const NAV_ITEMS = [
-  { label: 'Inicio', href: '#', active: false },
-  { label: 'Nosotros', href: '#', active: true },
-  { label: 'Investigación', href: '#', active: false },
-  { label: 'Publicaciones', href: '#', active: false },
+type Page = 'inicio' | 'nosotros';
+
+const NAV_ITEMS: { label: string; page: Page | null }[] = [
+  { label: 'Inicio',        page: 'inicio'   },
+  { label: 'Nosotros',      page: 'nosotros' },
+  { label: 'Investigación', page: null       },
+  { label: 'Publicaciones', page: null       },
 ];
 
-export function Nav() {
+type NavProps = {
+  currentPage: Page;
+  onNavigate: (page: Page) => void;
+};
+
+export function Nav({ currentPage, onNavigate }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -58,23 +65,26 @@ export function Nav() {
         </a>
 
         <nav className="hidden md:flex items-center gap-1">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              className={`relative font-body text-[12.5px] uppercase tracking-[0.14em] px-3 py-2 transition-colors duration-300 ${
-                item.active ? 'text-ink' : 'text-ink-muted hover:text-ink'
-              }`}
-            >
-              {item.label}
-              <span
-                className={`absolute left-3 right-3 -bottom-0.5 h-[1px] bg-amber origin-left transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
-                  item.active ? 'scale-x-100' : 'scale-x-0 hover:scale-x-100'
+          {NAV_ITEMS.map((item) => {
+            const isActive = item.page === currentPage;
+            return (
+              <button
+                key={item.label}
+                onClick={() => item.page && onNavigate(item.page)}
+                className={`relative font-body text-[12.5px] uppercase tracking-[0.14em] px-3 py-2 transition-colors duration-300 cursor-pointer bg-transparent border-0 ${
+                  isActive ? 'text-ink' : 'text-ink-muted hover:text-ink'
                 }`}
-                aria-hidden="true"
-              />
-            </a>
-          ))}
+              >
+                {item.label}
+                <span
+                  className={`absolute left-3 right-3 -bottom-0.5 h-[1px] bg-amber origin-left transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] ${
+                    isActive ? 'scale-x-100' : 'scale-x-0 hover:scale-x-100'
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+            );
+          })}
         </nav>
 
         <LanguageSwitcher />
