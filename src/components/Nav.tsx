@@ -14,9 +14,10 @@ const NAV_ITEMS: { label: string; page: Page | null }[] = [
 type NavProps = {
   currentPage: Page;
   onNavigate: (page: Page) => void;
+  logoAnimKey?: number;
 };
 
-export function Nav({ currentPage, onNavigate }: NavProps) {
+export function Nav({ currentPage, onNavigate, logoAnimKey = 0 }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -53,7 +54,7 @@ export function Nav({ currentPage, onNavigate }: NavProps) {
           className="flex items-center gap-3.5 group"
           aria-label="Empoderamiento Docente — Inicio"
         >
-          <Logo size={52} className="transition-transform duration-500 group-hover:scale-[1.03]" />
+          <Logo key={logoAnimKey} size={52} className="transition-transform duration-500 group-hover:scale-[1.03]" />
           <span className="hidden md:flex flex-col leading-[1.1] border-l border-hairline pl-3.5">
             <span className="font-display text-[13px] font-medium text-ink tracking-[0.01em]">
               Empoderamiento Docente

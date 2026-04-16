@@ -3,6 +3,7 @@ import { useLenis } from './hooks/useLenis';
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
 import { HomeHero } from './components/HomeHero';
+import { IntroScreen } from './components/IntroScreen';
 import { TeamSection } from './components/TeamSection';
 import { Footer } from './components/Footer';
 import { TeamModal, type ModalOpenContext } from './components/TeamModal';
@@ -14,7 +15,14 @@ type Page = 'inicio' | 'nosotros';
 export default function App() {
   useLenis();
 
+  const [introComplete, setIntroComplete] = useState(false);
+  const [logoAnimKey, setLogoAnimKey] = useState(0);
   const [currentPage, setCurrentPage] = useState<Page>('inicio');
+
+  function handleIntroComplete() {
+    setIntroComplete(true);
+    setLogoAnimKey(1);
+  }
   const [openContext, setOpenContext] = useState<ModalOpenContext | null>(null);
   const lastFocusedRef = useRef<HTMLElement | null>(null);
 
@@ -46,7 +54,9 @@ export default function App() {
 
   return (
     <>
-      <Nav currentPage={currentPage} onNavigate={setCurrentPage} />
+      {!introComplete && <IntroScreen onComplete={handleIntroComplete} />}
+
+      <Nav currentPage={currentPage} onNavigate={setCurrentPage} logoAnimKey={logoAnimKey} />
 
       {currentPage === 'inicio' && (
         <main className="relative">
