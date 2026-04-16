@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { HomeHero } from './components/HomeHero';
 import { HomeColabs } from './components/HomeColabs';
 import { HomePilares } from './components/HomePilares';
+import { HomeServicios } from './components/HomeServicios';
 import { IntroScreen } from './components/IntroScreen';
 import { TeamSection } from './components/TeamSection';
 import { Footer } from './components/Footer';
@@ -65,6 +66,7 @@ export default function App() {
           <HomeHero />
           <HomeColabs />
           <HomePilares />
+          <HomeServicios />
         </main>
       )}
 
