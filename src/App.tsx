@@ -6,6 +6,8 @@ import { HomeHero } from './components/HomeHero';
 import { HomeColabs } from './components/HomeColabs';
 import { HomePilares } from './components/HomePilares';
 import { HomeServicios } from './components/HomeServicios';
+import { HomeBrief } from './components/HomeBrief';
+import { HomeCTA } from './components/HomeCTA';
 import { IntroScreen } from './components/IntroScreen';
 import { TeamSection } from './components/TeamSection';
 import { Footer } from './components/Footer';
@@ -67,6 +69,8 @@ export default function App() {
           <HomeColabs />
           <HomePilares />
           <HomeServicios />
+          <HomeBrief />
+          <HomeCTA />
         </main>
       )}
 
