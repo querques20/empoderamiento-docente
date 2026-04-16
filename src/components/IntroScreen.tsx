@@ -41,10 +41,10 @@ export function IntroScreen({ onComplete }: Props) {
         style={{ width: 200, height: 200 }}
         aria-hidden="true"
       >
-        <span className="lighthouse-halo" />
-        <span className="lighthouse-beam" />
-        <span className="lighthouse-beam lighthouse-beam--opposite" />
-        <span className="lighthouse-spark" />
+        <span className="lighthouse-halo" style={{ animationDelay: '1.3s' }} />
+        <span className="lighthouse-beam" style={{ animationDelay: '1.4s' }} />
+        <span className="lighthouse-beam lighthouse-beam--opposite" style={{ animationDelay: '1.4s' }} />
+        <span className="lighthouse-spark" style={{ animationDelay: '1.5s' }} />
 
         <svg
           ref={svgRef}
